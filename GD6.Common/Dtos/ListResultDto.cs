@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GD6.Common
 {
-    public class ListResultDto<T> : IListResultDto<T> where T : class
+    public class ListResultDto<TEntityList> : IListResultDto<TEntityList> 
+        where TEntityList : class, ILista
     {
-        public int TotalCount { get; set; }
-        public IReadOnlyList<T> Items { get; set; }
+        public int Draw { get; set; }
+        public int RecordsTotal { get; set; }
+        public int RecordsFiltered { get; set; }
+        public IReadOnlyList<TEntityList> Data { get; set; }
 
-        public ListResultDto(int totalCount, IReadOnlyList<T> items)
+        public ListResultDto() { }
+
+        public ListResultDto(int recordsTotal, IReadOnlyList<TEntityList> data)
         {
-            TotalCount = totalCount;
-            Items = items;
+            RecordsTotal = recordsTotal;
+            Data = data;
         }
     }
 }

@@ -4,9 +4,12 @@ using System.Text;
 
 namespace GD6.Common
 {
-    public interface IListResultDto<T> where T : class
+    public interface IListResultDto<TEntityList> 
+        where TEntityList : class, ILista
     {
-        int TotalCount { get; set; }
-        IReadOnlyList<T> Items { get; set; }
+        int Draw { get; set; }
+        int RecordsTotal { get; set; }
+        int RecordsFiltered { get; set; }
+        IReadOnlyList<TEntityList> Data { get; set; }
     }
 }

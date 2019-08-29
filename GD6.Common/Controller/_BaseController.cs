@@ -63,21 +63,14 @@ namespace GD6.Common
         public virtual async Task DeleteById(int id) => await Service.Delete(id);
 
         [HttpPost("list")]
-        public virtual DatatablesRetorno GetListaTabela([FromBody] TRequest request)
+        public virtual IListResultDto<TEntityList> GetListaTabela([FromBody] TRequest request)
         {
             if (request == null)
-                return new DatatablesRetorno();
+                return new ListResultDto<TEntityList>();
 
             var entitiesListTable = Service.GetAll(request);
 
-            var result = new DatatablesRetorno()
-            {
-                draw = request.Draw,
-                data = entitiesListTable.Items,
-                recordsTotal = entitiesListTable.TotalCount,
-                recordsFiltered = entitiesListTable.TotalCount
-            };
-            return result;
+            return entitiesListTable;
         }
 
         [AllowAnonymous]

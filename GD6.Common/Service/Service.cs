@@ -84,12 +84,13 @@ namespace GD6.Common
 
             var entities = query.ProjectTo<TEntityList>().ToList();
 
-            //var entitiesList = Mapper.Map<IReadOnlyList<TEntityList>>(entities);
-
-            var result = new ListResultDto<TEntityList>(
-                totalCount,
-                entities
-            );
+            var result = new ListResultDto<TEntityList>
+            {
+                Data = entities,
+                RecordsFiltered = totalCount,
+                RecordsTotal = totalCount,
+                Draw = request.Draw
+            };
 
             return result;
         }

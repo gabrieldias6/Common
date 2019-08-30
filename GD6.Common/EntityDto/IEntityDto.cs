@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GD6.Common
+﻿namespace GD6.Common
 {
     public interface IEntityDto
     {

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GD6.Common
+﻿namespace GD6.Common
 {
-    public interface IRequestSelect
+    public interface IRequestSelect : IRequest
     {
-        string Value { get; set; }
         string Term { get; set; }
+        int SkipCount { get; set; }
+        int MaxResultCount { get; set; }
     }
 }

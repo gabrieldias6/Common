@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GD6.Common
+﻿namespace GD6.Common
 {
     public class RequestSelect : IRequestSelect
     {
@@ -31,5 +27,7 @@ namespace GD6.Common
                     _value = value;
             }
         }
+        public virtual int SkipCount { get; set; } = 0;
+        public virtual int MaxResultCount { get; set; } = 10;
     }
 }

@@ -2,17 +2,17 @@
 
 namespace GD6.Common
 {
-    public class ListResultDto<TEntityList> : IListResultDto<TEntityList> 
-        where TEntityList : class, ILista
+    public class EntityDtoListResult<TEntityList> : IEntityDtoListResult<TEntityList> 
+        where TEntityList : class, IEntityDtoList
     {
         public int Draw { get; set; }
         public int RecordsTotal { get; set; }
         public int RecordsFiltered { get; set; }
         public IReadOnlyList<TEntityList> Data { get; set; }
 
-        public ListResultDto() { }
+        public EntityDtoListResult() { }
 
-        public ListResultDto(int recordsTotal, IReadOnlyList<TEntityList> data)
+        public EntityDtoListResult(int recordsTotal, IReadOnlyList<TEntityList> data)
         {
             RecordsTotal = recordsTotal;
             Data = data;

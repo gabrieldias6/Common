@@ -28,18 +28,18 @@ namespace GD6.Common
     }
     
     public class BaseController<TEntityDto, TEntityList> :
-        BaseController<TEntityDto, TEntityList, ISelect, Request, RequestSelect>
+        BaseController<TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
         where TEntityDto : class, IEntityDto
-        where TEntityList : class, ILista
+        where TEntityList : class, IEntityDtoList
     {
-        public BaseController(IService<TEntityDto, TEntityList, ISelect, Request, RequestSelect> service) : base(service)
+        public BaseController(IService<TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect> service) : base(service)
         {
         }
     }
     public class BaseController<TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect> : BaseGD6Controller
     where TEntityDto : class, IEntityDto
-    where TEntityList : class, ILista
-    where TEntitySelect : class, ISelect
+    where TEntityList : class, IEntityDtoList
+    where TEntitySelect : class, IEntityDtoSelect
     where TRequest : class, IRequestList
     where TRequestSelect : class, IRequestSelect
     {
@@ -63,18 +63,10 @@ namespace GD6.Common
         public virtual async Task DeleteById(int id) => await Service.Delete(id);
 
         [HttpPost("list")]
-        public virtual IListResultDto<TEntityList> GetListaTabela([FromBody] TRequest request)
-        {
-            if (request == null)
-                return new ListResultDto<TEntityList>();
-
-            var entitiesListTable = Service.GetAll(request);
-
-            return entitiesListTable;
-        }
+        public virtual IEntityDtoListResult<TEntityList> List([FromBody] TRequest request) => Service.GetAll(request);
 
         [AllowAnonymous]
         [HttpPost("select")]
-        public virtual IEnumerable<TEntitySelect> GetListaSelect([FromBody] TRequestSelect requestSelect) => Service.GetAllSelect(requestSelect);
+        public virtual IEnumerable<TEntitySelect> Select([FromBody] TRequestSelect requestSelect) => Service.GetAllSelect(requestSelect);
     }
 }

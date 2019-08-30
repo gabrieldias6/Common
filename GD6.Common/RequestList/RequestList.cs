@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GD6.Common
+﻿namespace GD6.Common
 {
-    public class Request : IRequestList
+    public class RequestList : IRequestList
     {
         public int Draw { get; set; }
         public virtual string Value { get; set; }

@@ -54,10 +54,15 @@ namespace GD6.Common
             await _context.SaveChangesAsync();
         }
 
-        public virtual async Task Delete(int id)
+        public virtual async Task Delete(TEntity entity)
         {
-            var entity = await GetById(id);
             _context.Set<TEntity>().Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public virtual async Task DeleteMany(IEnumerable<TEntity> entities)
+        {
+            _context.Set<TEntity>().RemoveRange(entities);
             await _context.SaveChangesAsync();
         }
     }

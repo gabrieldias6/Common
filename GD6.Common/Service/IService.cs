@@ -3,18 +3,18 @@ using System.Threading.Tasks;
 
 namespace GD6.Common
 {
-    public interface IService<TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect>
+    public interface IService<TEntityDto, TEntityDtoList, TEntityDtoSelect, TRequestList, TRequestSelect>
         where TEntityDto : class, IEntityDto
-        where TEntityList : class, ILista
-        where TEntitySelect : class, ISelect
-        where TRequest : class, IRequestList
+        where TEntityDtoList : class, IEntityDtoList
+        where TEntityDtoSelect : class, IEntityDtoSelect
+        where TRequestList : class, IRequestList
         where TRequestSelect : class, IRequestSelect
     {
         Task<TEntityDto> GetById(int id);
 
-        IListResultDto<TEntityList> GetAll(TRequest request);
+        IEntityDtoListResult<TEntityDtoList> GetAll(TRequestList request);
 
-        IEnumerable<TEntitySelect> GetAllSelect(TRequestSelect request);
+        IEnumerable<TEntityDtoSelect> GetAllSelect(TRequestSelect request);
 
         Task<TEntityDto> Create(TEntityDto input);
 
@@ -22,7 +22,7 @@ namespace GD6.Common
 
         Task<TEntityDto> Update(int id, TEntityDto input);
 
-        Task UpdateMany(IEnumerable<TEntityDto> entitiesDtos);
+        Task<IEnumerable<TEntityDto>> UpdateMany(IEnumerable<TEntityDto> entitiesDtos);
 
         Task Delete(int id);
 

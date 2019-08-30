@@ -19,6 +19,8 @@ namespace GD6.Common
 
         Task UpdateMany(IEnumerable<TEntity> entities);
 
-        Task Delete(int id);
+        Task Delete(TEntity entity);
+
+        Task DeleteMany(IEnumerable<TEntity> entities);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace GD6.Common
 {
-    public class EntityDto : IEntityDto
+    public class EntityBaseDto : IEntityBaseDto
     {
         public int Id { get; set; }
     }

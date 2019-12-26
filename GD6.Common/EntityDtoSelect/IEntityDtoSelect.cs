@@ -3,6 +3,6 @@
     public interface IEntityDtoSelect
   {
     string Id { get; set; }
-    string Nome { get; set; }
+    string Name { get; set; }
   }
 }

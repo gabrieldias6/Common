@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace GD6.Common
 {
-    public class Repository<TEntity> : IRepository<TEntity> 
-        where TEntity : class, IEntity, new()
+    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> 
+        where TEntity : class, IEntityBase, new()
     {
         public readonly DbContext _context;
 
-        public Repository(DbContext dbContext)
+        public RepositoryBase(DbContext dbContext)
         {
             _context = dbContext;
         }

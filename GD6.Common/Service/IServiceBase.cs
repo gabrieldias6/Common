@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace GD6.Common
 {
-    public interface IService<TEntityDto, TEntityDtoList, TEntityDtoSelect, TRequestList, TRequestSelect>
-        where TEntityDto : class, IEntityDto
+    public interface IServiceBase<TEntityDto, TEntityDtoList, TEntityDtoSelect, TRequestList, TRequestSelect>
+        where TEntityDto : class, IEntityBaseDto
         where TEntityDtoList : class, IEntityDtoList
         where TEntityDtoSelect : class, IEntityDtoSelect
         where TRequestList : class, IRequestList

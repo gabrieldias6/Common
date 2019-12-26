@@ -8,29 +8,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GD6.Common
 {
-    public abstract class Service<TEntity, TEntityDto, TEntityList> :
-        Service<TEntity, TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
-        where TEntity : class, IEntity
-        where TEntityDto : class, IEntityDto
+    public abstract class ServiceBase<TEntity, TEntityDto, TEntityList> :
+        ServiceBase<TEntity, TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
+        where TEntity : class, IEntityBase
+        where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
     {
-        public Service(IRepository<TEntity> repository) : base(repository)
+        public ServiceBase(IRepositoryBase<TEntity> repository) : base(repository)
         {
         }
     }
 
-    public abstract class Service<TEntity, TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect> :
-        IService<TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect>
-        where TEntity : class, IEntity
-        where TEntityDto : class, IEntityDto
+    public abstract class ServiceBase<TEntity, TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect> :
+        IServiceBase<TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect>
+        where TEntity : class, IEntityBase
+        where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
         where TEntitySelect : class, IEntityDtoSelect
         where TRequestList : class, IRequestList
         where TRequestSelect : class, IRequestSelect
     {
-        protected readonly IRepository<TEntity> Repository;
+        protected readonly IRepositoryBase<TEntity> Repository;
 
-        public Service(IRepository<TEntity> repository)
+        public ServiceBase(IRepositoryBase<TEntity> repository)
         {
             Repository = repository;
         }

@@ -1,6 +1,6 @@
 ﻿namespace GD6.Common
 {
-    public interface IEntityDto
+    public interface IEntityBase
     {
         int Id { get; set; }
     }

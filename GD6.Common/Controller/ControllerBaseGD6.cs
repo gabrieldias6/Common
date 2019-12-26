@@ -10,13 +10,22 @@ namespace GD6.Common
     [Authorize]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class BaseGD6Controller : Controller
+    public class ControllerBaseGD6<TService, TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect> : Controller
+        where TService : IServiceBase<TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect>
+        where TEntityDto : class, IEntityBaseDto
+        where TEntityList : class, IEntityDtoList
+        where TEntitySelect : class, IEntityDtoSelect
+        where TRequest : class, IRequestList
+        where TRequestSelect : class, IRequestSelect
     {
-        public BaseGD6Controller()
+        protected TService Service { get; set; }
+
+        public ControllerBaseGD6(TService service)
         {
+            Service = service;
         }
 
-        public int? GetUserId()
+        protected int? GetUserId()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -24,30 +33,6 @@ namespace GD6.Common
                 return null;
 
             return Convert.ToInt32(userId);
-        }
-    }
-    
-    public class BaseController<TEntityDto, TEntityList> :
-        BaseController<TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
-        where TEntityDto : class, IEntityDto
-        where TEntityList : class, IEntityDtoList
-    {
-        public BaseController(IService<TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect> service) : base(service)
-        {
-        }
-    }
-    public class BaseController<TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect> : BaseGD6Controller
-    where TEntityDto : class, IEntityDto
-    where TEntityList : class, IEntityDtoList
-    where TEntitySelect : class, IEntityDtoSelect
-    where TRequest : class, IRequestList
-    where TRequestSelect : class, IRequestSelect
-    {
-        protected IService<TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect> Service { get; set; }
-
-        public BaseController(IService<TEntityDto, TEntityList, TEntitySelect, TRequest, TRequestSelect> service)
-        {
-            Service = service;
         }
 
         [HttpGet("{id}")]
@@ -68,5 +53,16 @@ namespace GD6.Common
         [AllowAnonymous]
         [HttpPost("select")]
         public virtual IEnumerable<TEntitySelect> Select([FromBody] TRequestSelect requestSelect) => Service.GetAllSelect(requestSelect);
+    }
+
+    public class ControllerBaseGD6<TService, TEntityDto, TEntityList> :
+        ControllerBaseGD6<TService, TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
+        where TService : IServiceBase<TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
+        where TEntityDto : class, IEntityBaseDto
+        where TEntityList : class, IEntityDtoList
+    {
+        public ControllerBaseGD6(TService service) : base(service)
+        {
+        }
     }
 }

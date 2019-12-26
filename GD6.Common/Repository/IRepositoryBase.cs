@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace GD6.Common
 {
-    public interface IRepository<TEntity> 
-        where TEntity : class, IEntity
+    public interface IRepositoryBase<TEntity> 
+        where TEntity : class, IEntityBase
     {
         Task<TEntity> GetById(int id);
 

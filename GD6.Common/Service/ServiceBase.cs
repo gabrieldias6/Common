@@ -14,7 +14,8 @@ namespace GD6.Common
         where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
     {
-        public ServiceBase(IRepositoryBase<TEntity> repository) : base(repository)
+        public ServiceBase(IRepositoryBase<TEntity> repository, IMapper mapper) 
+            : base(repository, mapper)
         {
         }
     }
@@ -29,10 +30,12 @@ namespace GD6.Common
         where TRequestSelect : class, IRequestSelect
     {
         protected readonly IRepositoryBase<TEntity> Repository;
+        public readonly IMapper Mapper;
 
-        public ServiceBase(IRepositoryBase<TEntity> repository)
+        public ServiceBase(IRepositoryBase<TEntity> repository, IMapper mapper)
         {
             Repository = repository;
+            Mapper = mapper;
         }
 
         protected virtual IQueryable<TEntity> GetByIdInclue(IQueryable<TEntity> query) => query;
@@ -43,10 +46,9 @@ namespace GD6.Common
             query = GetByIdInclue(query);
 
             var entityDto = await query
-                .ProjectTo<TEntityDto>()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            return entityDto;
+            return Mapper.Map<TEntityDto>(entityDto);
         }
 
         protected virtual IQueryable<TEntity> GetEntityByIdInclue(IQueryable<TEntity> query) => query;
@@ -70,7 +72,7 @@ namespace GD6.Common
         protected virtual IQueryable<TEntity> GetAllInclude(IQueryable<TEntity> query) => query;
         protected virtual IQueryable<TEntity> GetAllFilter(IQueryable<TEntity> query, TRequestList request) => query;
         protected virtual IQueryable<TEntity> GetAllSorting(IQueryable<TEntity> query, TRequestList request) => query;//.OrderBy(request.Sorting);
-        protected virtual IQueryable<TEntity> GetAllPaging(IQueryable<TEntity> query, TRequestList request) => query.Skip(request.SkipCount).Take(request.MaxResultCount);
+        protected virtual IQueryable<TEntity> GetAllPaging(IQueryable<TEntity> query, TRequestList request) => query.Skip(request.Start).Take(request.Length);
         public virtual IEntityDtoListResult<TEntityList> GetAll(TRequestList request)
         {
             var query = GetAll();
@@ -83,7 +85,7 @@ namespace GD6.Common
             query = GetAllSorting(query, request);
             query = GetAllPaging(query, request);
 
-            var entities = query.ProjectTo<TEntityList>().ToList();
+            var entities = query.ProjectTo<TEntityList>(Mapper.ConfigurationProvider).ToList();
 
             var result = new EntityDtoListResult<TEntityList>
             {
@@ -108,7 +110,7 @@ namespace GD6.Common
 
             query = GetAllSelectPaging(query, request);
 
-            var entities = query.ProjectTo<TEntitySelect>().ToList();
+            var entities = query.ProjectTo<TEntitySelect>(Mapper.ConfigurationProvider).ToList();
 
             //var entities = query.Take(100).ToList();
             //var entitiesSelectList = Mapper.Map<IEnumerable<TEntitySelect>>(entities);
@@ -119,7 +121,7 @@ namespace GD6.Common
 
         protected virtual async Task CreateDoBefore(TEntityDto entityDto) { }
         protected virtual async Task CreateDoAfter(TEntity entity, TEntityDto entityDto) { }
-        public async Task<TEntityDto> Create(TEntityDto entityDto)
+        public virtual async Task<TEntityDto> Create(TEntityDto entityDto)
         {
             await CreateDoBefore(entityDto);
 
@@ -134,7 +136,7 @@ namespace GD6.Common
             return entityDto;
         }
 
-        public async Task<TEntity> Create(TEntity input)
+        public virtual async Task<TEntity> Create(TEntity input)
         {
             await Repository.Create(input);
             return input;
@@ -142,7 +144,7 @@ namespace GD6.Common
 
         protected virtual async Task CreateManyDoBefore(IEnumerable<TEntityDto> entitiesDto) { }
         protected virtual async Task CreateManyDoAfter(IEnumerable<TEntity> entities, IEnumerable<TEntityDto> entitiesDto) { }
-        public async Task<IEnumerable<TEntityDto>> CreateMany(IEnumerable<TEntityDto> entitiesDto)
+        public virtual async Task<IEnumerable<TEntityDto>> CreateMany(IEnumerable<TEntityDto> entitiesDto)
         {
             await CreateManyDoBefore(entitiesDto);
 
@@ -155,7 +157,7 @@ namespace GD6.Common
             return Mapper.Map<IEnumerable<TEntityDto>>(entities);
         }
 
-        public async Task CreateMany(IEnumerable<TEntity> entities)
+        public virtual async Task CreateMany(IEnumerable<TEntity> entities)
         {
             await Repository.CreateMany(entities);
         }
@@ -184,7 +186,7 @@ namespace GD6.Common
 
         protected virtual async Task UpdateManyDoBefore(IEnumerable<TEntityDto> entitiesDto) { }
         protected virtual async Task UpdateManyDoAfter(IEnumerable<TEntity> entities, IEnumerable<TEntityDto> entitiesDto) { }
-        public async Task<IEnumerable<TEntityDto>> UpdateMany(IEnumerable<TEntityDto> entitiesDto)
+        public virtual async Task<IEnumerable<TEntityDto>> UpdateMany(IEnumerable<TEntityDto> entitiesDto)
         {
             await UpdateManyDoBefore(entitiesDto);
 
@@ -197,7 +199,7 @@ namespace GD6.Common
             return Mapper.Map<IEnumerable<TEntityDto>>(entities);
         }
 
-        public async Task UpdateMany(IEnumerable<TEntity> entities)
+        public virtual async Task UpdateMany(IEnumerable<TEntity> entities)
         {
             await Repository.UpdateMany(entities);
         }
@@ -213,7 +215,7 @@ namespace GD6.Common
         }
 
         protected virtual async Task DeleteManyDoBefore(IEnumerable<TEntity> entity) { }
-        public async Task DeleteMany(IEnumerable<int> ids)
+        public virtual async Task DeleteMany(IEnumerable<int> ids)
         {
             var entities = await GetAll().Where(x => ids.Contains(x.Id)).ToListAsync();
 

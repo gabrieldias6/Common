@@ -2,6 +2,8 @@
 {
     public class RequestSelect : IRequestSelect
     {
+        public int? Id { get; set; }
+
         private string _value;
         public virtual string Value
         {

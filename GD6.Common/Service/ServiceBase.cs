@@ -8,20 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GD6.Common
 {
-    public abstract class ServiceBase<TEntity, TEntityDto, TEntityList> :
-        ServiceBase<TEntity, TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
+    public abstract class ServiceBase<TRepository, TEntity, TEntityDto, TEntityList> :
+        ServiceBase<TRepository, TEntity, TEntityDto, TEntityList, IEntityDtoSelect, RequestList, RequestSelect>
+        where TRepository : class, IRepositoryBase<TEntity>
         where TEntity : class, IEntityBase
         where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
     {
-        public ServiceBase(IRepositoryBase<TEntity> repository, IMapper mapper) 
+        public ServiceBase(TRepository repository, IMapper mapper) 
             : base(repository, mapper)
         {
         }
     }
 
-    public abstract class ServiceBase<TEntity, TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect> :
+    public abstract class ServiceBase<TRepository, TEntity, TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect> :
         IServiceBase<TEntityDto, TEntityList, TEntitySelect, TRequestList, TRequestSelect>
+        where TRepository : class, IRepositoryBase<TEntity>
         where TEntity : class, IEntityBase
         where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
@@ -29,10 +31,10 @@ namespace GD6.Common
         where TRequestList : class, IRequestList
         where TRequestSelect : class, IRequestSelect
     {
-        protected readonly IRepositoryBase<TEntity> Repository;
+        protected readonly TRepository Repository;
         public readonly IMapper Mapper;
 
-        public ServiceBase(IRepositoryBase<TEntity> repository, IMapper mapper)
+        public ServiceBase(TRepository repository, IMapper mapper)
         {
             Repository = repository;
             Mapper = mapper;
@@ -45,10 +47,14 @@ namespace GD6.Common
 
             query = GetByIdInclue(query);
 
-            var entityDto = await query
-                .FirstOrDefaultAsync(x => x.Id == id);
+            //var entityDto = await query
+            //    .FirstOrDefaultAsync(x => x.Id == id);
+            //return Mapper.Map<TEntityDto>(entityDto);
 
-            return Mapper.Map<TEntityDto>(entityDto);
+            var entityDto = await query.Where(x => x.Id == id).ProjectTo<TEntityDto>(Mapper.ConfigurationProvider).FirstOrDefaultAsync();
+
+            return entityDto;
+
         }
 
         protected virtual IQueryable<TEntity> GetEntityByIdInclue(IQueryable<TEntity> query) => query;
@@ -105,10 +111,18 @@ namespace GD6.Common
         {
             var query = GetAll();
 
-            query = GetAllSelectFilter(query, request);
-            query = GetAllSelectSorting(query, request);
+            // Verifica se passou Id
+            if (request.Id.HasValue)
+                // Temos q retornar só este item
+                query = query.Where(x => x.Id == request.Id.Value);
+            else
+            {
 
-            query = GetAllSelectPaging(query, request);
+                query = GetAllSelectFilter(query, request);
+                query = GetAllSelectSorting(query, request);
+
+                query = GetAllSelectPaging(query, request);
+            }
 
             var entities = query.ProjectTo<TEntitySelect>(Mapper.ConfigurationProvider).ToList();
 

@@ -42,7 +42,7 @@ namespace GD6.Common
         public virtual async Task<TEntityDto> Create([FromBody] TEntityDto entity) => await Service.Create(entity);
 
         [HttpPut("{id}")]
-        public virtual async Task Update([FromRoute] int id, [FromBody] TEntityDto entity) => await Service.Update(id, entity);
+        public virtual async Task<TEntityDto> Update([FromRoute] int id, [FromBody] TEntityDto entity) => await Service.Update(id, entity);
 
         [HttpDelete("{id}")]
         public virtual async Task DeleteById(int id) => await Service.Delete(id);
@@ -51,8 +51,8 @@ namespace GD6.Common
         public virtual IEntityDtoListResult<TEntityList> List([FromBody] TRequest request) => Service.GetAll(request);
 
         [AllowAnonymous]
-        [HttpPost("select")]
-        public virtual IEnumerable<TEntitySelect> Select([FromBody] TRequestSelect requestSelect) => Service.GetAllSelect(requestSelect);
+        [HttpGet("select")]
+        public virtual IEnumerable<TEntitySelect> Select([FromQuery] TRequestSelect requestSelect) => Service.GetAllSelect(requestSelect);
     }
 
     public class ControllerBaseGD6<TService, TEntityDto, TEntityList> :

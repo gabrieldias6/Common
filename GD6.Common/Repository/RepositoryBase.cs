@@ -45,7 +45,7 @@ namespace GD6.Common
         {
             entity.Id = id;
             _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  
         }
 
         public virtual async Task UpdateMany(IEnumerable<TEntity> entities)

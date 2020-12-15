@@ -7,7 +7,7 @@ namespace GD6.Common
     public interface IRepositoryBase<TEntity> 
         where TEntity : class, IEntityBase
     {
-        Task<TEntity> GetById(int id);
+        //Task<TEntity> GetById(int id);
 
         IQueryable<TEntity> GetAll();
 

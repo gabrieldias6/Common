@@ -6,6 +6,13 @@ namespace GD6.Common
 {
     public class PagSeguroBoletoReturn
     {
+        public PagSeguroBoletoReturn()
+        {
+            Sucesso = true;
+        }
+
+        public bool Sucesso { get; set; }
+        public string ErroMensagem { get; set; }
         public IEnumerable<PagSeguroBoletoReturnDto> Boletos { get; set; }
     }
 

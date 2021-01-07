@@ -197,9 +197,9 @@ namespace GD6.Common
             if (entity == null)
                 throw new ErroException("O id informado não existe!");
 
-            Mapper.Map(input, entity);
-
             await UpdateDoBefore(entity, input);
+
+            Mapper.Map(input, entity);
 
             await Update(id, entity);
 

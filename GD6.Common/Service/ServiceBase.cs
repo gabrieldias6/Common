@@ -189,9 +189,12 @@ namespace GD6.Common
             await Repository.CreateMany(entities);
         }
         protected virtual async Task UpdateDoBefore(TEntity entity, TEntityDto entityDto) { }
-        protected virtual async Task UpdateDoAfter(TEntity entity, TEntityDto entityDto) { }
+        protected virtual async Task<TEntity> UpdateDoAfter(TEntity entity, TEntityDto entityDto) { return entity; }
         public virtual async Task<TEntityDto> Update(int id, TEntityDto input)
         {
+            if (input == null)
+                throw new ErroException("Não passou a entidade!");
+
             var entity = await GetAll().FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity == null)
@@ -203,9 +206,9 @@ namespace GD6.Common
 
             await Update(id, entity);
 
-            await UpdateDoAfter(entity, input);
+            entity = await UpdateDoAfter(entity, input);
 
-            return Mapper.Map<TEntityDto>(entity);
+            return await GetById(id); //Mapper.Map<TEntityDto>(entity);
         }
 
         public virtual async Task<TEntity> Update(int id, TEntity input)

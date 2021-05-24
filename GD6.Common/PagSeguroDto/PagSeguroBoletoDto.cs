@@ -33,6 +33,18 @@ namespace GD6.Common
         public string Name { get; set; }
         public string Email { get; set; }
         public PagSeguroCustomerPhone Phone { get; set; }
+        public PagSeguroAddress Address { get; set; }
+    }
+
+    public class PagSeguroAddress
+    {
+        public string PostalCode { get; set; }
+        public string Street { get; set; }
+        public string Number { get; set; }
+        public string District { get; set; }
+        public string Complement { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
     }
 
     public class PagSeguroCustomerDocument

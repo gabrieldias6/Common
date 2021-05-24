@@ -54,6 +54,7 @@ namespace GD6.Common
             //    .FirstOrDefaultAsync(x => x.Id == id);
             //return Mapper.Map<TEntityDto>(entityDto);
 
+
             var entityDto = await query
                 .Where(x => x.Id == id)
                 .ProjectTo<TEntityDto>(Mapper.ConfigurationProvider)
@@ -163,7 +164,7 @@ namespace GD6.Common
             return entityDto;
         }
 
-        public virtual async Task<TEntity> Create(TEntity entity)
+        protected virtual async Task<TEntity> Create(TEntity entity)
         {
             await Repository.Create(entity);
             return entity;
@@ -217,13 +218,13 @@ namespace GD6.Common
             return input;
         }
 
-        protected virtual async Task UpdateManyDoBefore(IEnumerable<TEntityDto> entitiesDto) { }
+        protected virtual async Task UpdateManyDoBefore(IEnumerable<TEntity> entities, IEnumerable<TEntityDto> entitiesDto) { }
         protected virtual async Task UpdateManyDoAfter(IEnumerable<TEntity> entities, IEnumerable<TEntityDto> entitiesDto) { }
         public virtual async Task<IEnumerable<TEntityDto>> UpdateMany(IEnumerable<TEntityDto> entitiesDto)
         {
-            await UpdateManyDoBefore(entitiesDto);
-
             var entities = Mapper.Map<IEnumerable<TEntity>>(entitiesDto);
+
+            await UpdateManyDoBefore(entities, entitiesDto);
 
             await Repository.UpdateMany(entities);
 

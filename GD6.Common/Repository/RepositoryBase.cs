@@ -5,65 +5,65 @@ using System.Threading.Tasks;
 
 namespace GD6.Common
 {
-    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> 
+    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         where TEntity : class, IEntityBase, new()
     {
-        public readonly DbContext _context;
+        public readonly IUnitOfWork UnitOfWork;
 
-        public RepositoryBase(DbContext dbContext)
+        public RepositoryBase(IUnitOfWork unitOfWork)
         {
-            _context = dbContext;
+            UnitOfWork = unitOfWork;
         }
 
         public virtual async Task<TEntity> GetById(int id)
         {
-            return await _context.Set<TEntity>()
+            return await UnitOfWork.Current.Set<TEntity>()
                       .AsNoTracking()
                       .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public IQueryable<TEntity> GetAll()
         {
-            return _context
+            return UnitOfWork.Current
               .Set<TEntity>()
               .AsNoTracking();
         }
 
         public virtual async Task Create(TEntity entity)
         {
-            await _context.Set<TEntity>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await UnitOfWork.Current.Set<TEntity>().AddAsync(entity);
+            await UnitOfWork.Current.SaveChangesAsync();
         }
 
         public virtual async Task CreateMany(IEnumerable<TEntity> entities)
         {
-            await _context.Set<TEntity>().AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
+            await UnitOfWork.Current.Set<TEntity>().AddRangeAsync(entities);
+            await UnitOfWork.Current.SaveChangesAsync();
         }
 
         public virtual async Task Update(int id, TEntity entity)
         {
             entity.Id = id;
-            _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();  
+            UnitOfWork.Current.Set<TEntity>().Update(entity);
+            await UnitOfWork.Current.SaveChangesAsync();  
         }
 
         public virtual async Task UpdateMany(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().UpdateRange(entities);
-            await _context.SaveChangesAsync();
+            UnitOfWork.Current.Set<TEntity>().UpdateRange(entities);
+            await UnitOfWork.Current.SaveChangesAsync();
         }
 
         public virtual async Task Delete(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
-            await _context.SaveChangesAsync();
+            UnitOfWork.Current.Set<TEntity>().Remove(entity);
+            await UnitOfWork.Current.SaveChangesAsync();
         }
 
         public virtual async Task DeleteMany(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().RemoveRange(entities);
-            await _context.SaveChangesAsync();
+            UnitOfWork.Current.Set<TEntity>().RemoveRange(entities);
+            await UnitOfWork.Current.SaveChangesAsync();
         }
     }
 }

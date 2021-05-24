@@ -34,7 +34,8 @@ namespace GD6.Common
         Devolvida = 6,
         Cancelada = 7,
         Debitado = 8,
-        RetencaoTemporaria = 9
+        RetencaoTemporaria = 9,
+        Erro = 10
     }
 
 
@@ -131,9 +132,13 @@ namespace GD6.Common
         /// </summary>
         public decimal FeeAmount
         {
-            get;
-            set;
+            get
+            {
+                return (CreditorFees?.IntermediationFeeAmount + CreditorFees?.IntermediationRateAmount) ?? 0;
+            }
         }
+
+        public PagSeguroTransactionDtoCreditorFees CreditorFees { get; set; }
 
         /// <summary>
         /// Net amount
@@ -211,6 +216,12 @@ namespace GD6.Common
         }
 
 
+    }
+
+    public class PagSeguroTransactionDtoCreditorFees
+    {
+        public decimal IntermediationRateAmount { get; set; }
+        public decimal IntermediationFeeAmount { get; set; }
     }
 
     /// <summary>

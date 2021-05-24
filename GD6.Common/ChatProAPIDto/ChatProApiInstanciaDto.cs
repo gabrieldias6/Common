@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -100,6 +101,14 @@ namespace GD6.Common
     }
     public class ChatProApiMessageDto : ChatProApiResponse
     {
+        // Erro
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("timestamp")]
+        public int Timestamp { get; set; }
+
+
         public bool Status { get; set; }
         public ChatProApiMessageResposeMessageDto ResposeMessage { get; set; }
     }

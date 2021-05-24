@@ -6,6 +6,9 @@ namespace GD6.Common
 {
     public class Ng2Chart
     {
+        /// <summary>
+        /// Eixo X do Gráfico
+        /// </summary>
         public List<string> Labels { get; set; }
         public List<Ng2ChartLine> Dados { get; set; }
 
@@ -21,15 +24,22 @@ namespace GD6.Common
         public int Id { get; set; }
         public string Label { get; set; }
         public List<int?> Data { get; set; }
+        public bool? Hidden { get; set; }
+
+        public string BackgroundColor { get; set; }
+        public string BorderColor { get; set; }
 
         public Ng2ChartLine(string label)
         {
             this.Label = label;
             this.Data = new List<int?>();
         }
-        public Ng2ChartLine(int id, string label) : this(label)
+        public Ng2ChartLine(int id, string label, bool hidden = false, string backgroundColor = null, string borderColor = null) : this(label)
         {
             Id = id;
+            Hidden = hidden;
+            BackgroundColor = backgroundColor;
+            BorderColor = borderColor;
         }
     }
 }

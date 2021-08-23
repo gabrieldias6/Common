@@ -4,6 +4,16 @@ using System.Text;
 
 namespace GD6.Common
 {
+
+    public class Ng2ChartLabelInfo : Ng2Chart
+    {
+        public List<DateTime> LabelsData { get; set; }
+        public Ng2ChartLabelInfo() : base()
+        {
+            this.LabelsData = new List<DateTime>();
+        }
+    }
+
     public class Ng2Chart
     {
         /// <summary>

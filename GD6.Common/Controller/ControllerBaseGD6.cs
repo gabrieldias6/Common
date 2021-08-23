@@ -41,6 +41,18 @@ namespace GD6.Common
         [HttpPost]
         public virtual async Task<TEntityDto> Create([FromBody] TEntityDto entity) => await Service.Create(entity);
 
+        [HttpPut("save")]
+        public virtual async Task<TEntityDto> Save([FromBody] TEntityDto entity)
+        {
+            if (entity == null)
+                throw new ErroException("Não passou uma entidade!");
+
+            if (entity.Id > 0)
+                return await Service.Update(entity.Id, entity);
+            else
+                return await Service.Create(entity);
+        }
+
         [HttpPut("{id}")]
         public virtual async Task<TEntityDto> Update([FromRoute] int id, [FromBody] TEntityDto entity) => await Service.Update(id, entity);
 

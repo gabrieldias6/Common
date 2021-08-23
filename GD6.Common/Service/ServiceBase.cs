@@ -178,7 +178,7 @@ namespace GD6.Common
 
             var entities = Mapper.Map<IEnumerable<TEntity>>(entitiesDto);
 
-            await Repository.CreateMany(entities);
+            await CreateMany(entities);
 
             await CreateManyDoAfter(entities, entitiesDto);
 
@@ -190,6 +190,7 @@ namespace GD6.Common
             await Repository.CreateMany(entities);
         }
         protected virtual async Task UpdateDoBefore(TEntity entity, TEntityDto entityDto) { }
+        protected virtual async Task UpdateDoBeforeMap(TEntity entity, TEntityDto entityDto) { }
         protected virtual async Task<TEntity> UpdateDoAfter(TEntity entity, TEntityDto entityDto) { return entity; }
         public virtual async Task<TEntityDto> Update(int id, TEntityDto input)
         {
@@ -204,6 +205,8 @@ namespace GD6.Common
             await UpdateDoBefore(entity, input);
 
             Mapper.Map(input, entity);
+
+            await UpdateDoBeforeMap(entity, input);
 
             await Update(id, entity);
 
@@ -226,7 +229,7 @@ namespace GD6.Common
 
             await UpdateManyDoBefore(entities, entitiesDto);
 
-            await Repository.UpdateMany(entities);
+            await UpdateMany(entities);
 
             await UpdateManyDoAfter(entities, entitiesDto);
 

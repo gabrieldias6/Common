@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace GD6.Common
@@ -61,6 +62,7 @@ namespace GD6.Common
 
     public class ChatProApiResponse
     {
+        public HttpStatusCode ResponseStatusCode { get; set; }
         public bool SuccessRequest { get; set; }
         public string MessageErro { get; set; }
         public string Message { get; set; }

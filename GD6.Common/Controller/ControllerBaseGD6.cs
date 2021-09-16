@@ -15,7 +15,7 @@ namespace GD6.Common
         where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
         where TEntitySelect : class, IEntityDtoSelect
-        where TRequest : class, IRequestList
+        where TRequest : class, IRequestList, new()
         where TRequestSelect : class, IRequestSelect
     {
         protected TService Service { get; set; }

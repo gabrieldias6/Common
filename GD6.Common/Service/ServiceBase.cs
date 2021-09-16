@@ -15,7 +15,7 @@ namespace GD6.Common
         where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
     {
-        public ServiceBase(TRepository repository, IMapper mapper, ContextApp contextApp) 
+        public ServiceBase(TRepository repository, IMapper mapper, ContextApp contextApp)
             : base(repository, mapper, contextApp)
         {
         }
@@ -28,7 +28,7 @@ namespace GD6.Common
         where TEntityDto : class, IEntityBaseDto
         where TEntityList : class, IEntityDtoList
         where TEntitySelect : class, IEntityDtoSelect
-        where TRequestList : class, IRequestList
+        where TRequestList : class, IRequestList, new()
         where TRequestSelect : class, IRequestSelect
     {
         protected readonly TRepository Repository;
@@ -88,10 +88,25 @@ namespace GD6.Common
         protected virtual IQueryable<TEntity> GetAllInclude(IQueryable<TEntity> query) => query;
         protected virtual IQueryable<TEntity> GetAllFilter(IQueryable<TEntity> query, TRequestList request) => query;
         protected virtual IQueryable<TEntity> GetAllSorting(IQueryable<TEntity> query, TRequestList request) => query;//.OrderBy(request.Sorting);
-        protected virtual IQueryable<TEntity> GetAllPaging(IQueryable<TEntity> query, TRequestList request) => query.Skip(request.Start).Take(request.Length);
-        protected virtual void GetAllAfter(IEnumerable<TEntityList> entities, TRequestList request) { }
+        protected virtual IQueryable<TEntity> GetAllPaging(IQueryable<TEntity> query, TRequestList request)
+        {
+            if (request.Length <= 0)
+                return query;
+
+            return query.Skip(request.Start).Take(request.Length);
+        }
+        protected virtual void GetAllAfter(List<TEntityList> entities, TRequestList request) { }
         public virtual IEntityDtoListResult<TEntityList> GetAll(TRequestList request)
         {
+            if (request == null)
+                return new EntityDtoListResult<TEntityList>
+                {
+                    Data = new List<TEntityList>(),
+                    RecordsFiltered = 0,
+                    RecordsTotal = 0,
+                    Draw = request.Draw
+                };
+
             var query = GetAll();
 
             query = GetAllInclude(query);
@@ -119,10 +134,21 @@ namespace GD6.Common
 
         protected virtual IQueryable<TEntity> GetAllSelectFilter(IQueryable<TEntity> query, TRequestSelect requestSelect) => query;
         protected virtual IQueryable<TEntity> GetAllSelectSorting(IQueryable<TEntity> query, TRequestSelect request) => query;//.OrderBy(request.Sorting);
-        protected virtual IQueryable<TEntity> GetAllSelectPaging(IQueryable<TEntity> query, TRequestSelect request) => query.Skip(request.SkipCount).Take(request.MaxResultCount);
+        protected virtual IQueryable<TEntity> GetAllSelectPaging(IQueryable<TEntity> query, TRequestSelect request)
+        {
+            if (request.MaxResultCount <= 0)
+                return query;
+
+            return query.Skip(request.SkipCount).Take(request.MaxResultCount);
+            //return query.Skip(request.SkipCount).Take(request.MaxResultCount);
+        }
+
         protected virtual void GetAllSelectAfter(IEnumerable<TEntitySelect> entities, TRequestSelect request) { }
         public virtual IEnumerable<TEntitySelect> GetAllSelect(TRequestSelect request)
         {
+            if (request == null)
+                return new List<TEntitySelect>();
+
             var query = GetAll();
 
             // Verifica se passou Id

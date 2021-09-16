@@ -7,7 +7,7 @@ namespace GD6.Common
         where TEntityDto : class, IEntityBaseDto
         where TEntityDtoList : class, IEntityDtoList
         where TEntityDtoSelect : class, IEntityDtoSelect
-        where TRequestList : class, IRequestList
+        where TRequestList : class, IRequestList, new()
         where TRequestSelect : class, IRequestSelect
     {
         Task<TEntityDto> GetById(int id);

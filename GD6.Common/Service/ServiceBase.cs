@@ -104,7 +104,7 @@ namespace GD6.Common
                     Data = new List<TEntityList>(),
                     RecordsFiltered = 0,
                     RecordsTotal = 0,
-                    Draw = request.Draw
+                    Draw = 0
                 };
 
             var query = GetAll();
@@ -133,6 +133,7 @@ namespace GD6.Common
         }
 
         protected virtual IQueryable<TEntity> GetAllSelectFilter(IQueryable<TEntity> query, TRequestSelect requestSelect) => query;
+        protected virtual IQueryable<TEntity> GetAllSelectFilterId(IQueryable<TEntity> query, int id) => Repository.GetAll().IgnoreQueryFilters().Where(x => x.Id == id);
         protected virtual IQueryable<TEntity> GetAllSelectSorting(IQueryable<TEntity> query, TRequestSelect request) => query;//.OrderBy(request.Sorting);
         protected virtual IQueryable<TEntity> GetAllSelectPaging(IQueryable<TEntity> query, TRequestSelect request)
         {
@@ -143,7 +144,16 @@ namespace GD6.Common
             //return query.Skip(request.SkipCount).Take(request.MaxResultCount);
         }
 
-        protected virtual void GetAllSelectAfter(IEnumerable<TEntitySelect> entities, TRequestSelect request) { }
+        protected virtual void GetAllSelectAfter(List<TEntitySelect> entities, TRequestSelect request)
+        {
+            if (entities != null && entities.Any())
+                entities.ForEach(entitie =>
+                {
+                    if (entitie.Excluido)
+                        entitie.Nome += " (EXCLUIDO)";
+                });
+        }
+
         public virtual IEnumerable<TEntitySelect> GetAllSelect(TRequestSelect request)
         {
             if (request == null)
@@ -154,7 +164,7 @@ namespace GD6.Common
             // Verifica se passou Id
             if (request.Id.HasValue)
                 // Temos q retornar só este item
-                query = query.Where(x => x.Id == request.Id.Value);
+                query = GetAllSelectFilterId(query, request.Id.Value);
             else
             {
 

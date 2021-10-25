@@ -16,6 +16,7 @@
     <PackageReference Include="CanducciCep" Version="4.0.0" />
     <PackageReference Include="ChartJSCore" Version="1.5.8" />
     <PackageReference Include="ClosedXML" Version="0.95.3" />
+    <PackageReference Include="EscritaPorExtenso" Version="0.2.2" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.13" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />

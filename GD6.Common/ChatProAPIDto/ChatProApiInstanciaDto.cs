@@ -62,13 +62,14 @@ namespace GD6.Common
 
     public class ChatProApiResponse
     {
+        public string Content { get; set; }
         public HttpStatusCode ResponseStatusCode { get; set; }
         public bool SuccessRequest { get; set; }
         public string MessageErro { get; set; }
         public string Message { get; set; }
     }
 
-    public class ChatProApiDto: ChatProApiResponse
+    public class ChatProApiDto : ChatProApiResponse
     {
         public bool Success { get; set; }
     }
@@ -87,7 +88,7 @@ namespace GD6.Common
         public string Status { get; set; }
     }
 
-    public class ChatProApiResponseInstanciaGenerateQrCode: ChatProApiResponse
+    public class ChatProApiResponseInstanciaGenerateQrCode : ChatProApiResponse
     {
         public string Error { get; set; }
         public string Qr { get; set; }
@@ -119,5 +120,54 @@ namespace GD6.Common
     {
         public string Id { get; set; }
         public string Timestamp { get; set; }
+    }
+
+    // Mensagem Uri
+    public class ChatProApiMessageFileRequest
+    {
+        public string Caption { get; set; }
+        public string Number { get; set; }
+        public string Url { get; set; }
+    }
+    public class ChatProApiMessageFileResponse : ChatProApiResponse
+    {
+        [JsonProperty("requestMenssage")]
+        public ChatProApiMessageFileResponseRequestMessage RequestMenssage { get; set; }
+
+        [JsonProperty("resposeMessage")]
+        public ChatProApiMessageFileResponseResposeMessage ResposeMessage { get; set; }
+
+        [JsonProperty("status")]
+        public bool Status { get; set; }
+
+        //// Erro
+        //[JsonProperty("id")]
+        //public string Id { get; set; }
+
+        //[JsonProperty("timestamp")]
+        //public int Timestamp { get; set; }
+
+
+        //public ChatProApiMessageResposeMessageDto ResposeMessage { get; set; }
+    }
+
+    public class ChatProApiMessageFileResponseRequestMessage
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+        [JsonProperty("number")]
+        public string Number { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
+        [JsonProperty("caption")]
+        public string Caption { get; set; }
+    }
+
+    public class ChatProApiMessageFileResponseResposeMessage
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+        [JsonProperty("queeId")]
+        public string QueeId { get; set; }
     }
 }

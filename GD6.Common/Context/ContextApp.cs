@@ -13,6 +13,7 @@ namespace GD6.Common
         public const string ClaimCliente = "ClienteId";
         public const string ClaimClienteNome = "ClienteNome";
         public const string ClaimPlanoId = "PlanoId";
+        public const string ClaimUsuarioPermissoes = "UsuarioPermissoes";
 
         public int? UserId { get; set; }
         public int? ClientId { get; set; }

@@ -114,6 +114,9 @@ namespace GD6.Common
 
             var totalCount = query.Count();
 
+            if (totalCount < request.Start)
+                request.Start = 0;
+
             query = GetAllSorting(query, request);
             query = GetAllPaging(query, request);
 

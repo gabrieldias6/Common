@@ -99,6 +99,17 @@ namespace GD6.Common
     // Mensagem
     public class ChatProApiMessageRequest
     {
+        public ChatProApiMessageRequest()
+        {
+
+        }
+
+        public ChatProApiMessageRequest(string number, string message)
+        {
+            Number = number;
+            Message = message;
+        }
+
         public string Message { get; set; }
         public string Number { get; set; }
     }

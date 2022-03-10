@@ -12,7 +12,7 @@ namespace GD6.Common
         {
             NumberOfPayments = 1;
             Periodicity = "monthly";
-            Instructions = "Mensalidade Online Clínica";
+            Instructions = "Mensalidade ClinUP";
         }
 
         public string Reference { get; set; }

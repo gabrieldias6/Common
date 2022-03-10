@@ -48,9 +48,9 @@ namespace GD6.Common
                 throw new ErroException("Não passou uma entidade!");
 
             if (entity.Id > 0)
-                return await Service.Update(entity.Id, entity);
+                return await Update(entity.Id, entity);
             else
-                return await Service.Create(entity);
+                return await Create(entity);
         }
 
         [HttpPut("{id}")]

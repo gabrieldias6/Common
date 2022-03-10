@@ -124,12 +124,17 @@ namespace GD6.Common
 
 
         public bool Status { get; set; }
+
+        [JsonProperty("resposeMessage")]
         public ChatProApiMessageResposeMessageDto ResposeMessage { get; set; }
     }
 
     public class ChatProApiMessageResposeMessageDto
     {
+        [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("timestamp")]
         public string Timestamp { get; set; }
     }
 

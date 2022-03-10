@@ -33,16 +33,22 @@ namespace GD6.Common
     {
         public int Id { get; set; }
         public string Label { get; set; }
-        public List<int?> Data { get; set; }
+        public List<decimal?> Data { get; set; }
         public bool? Hidden { get; set; }
 
+        public string YAxisID { get; set; }
+
         public string BackgroundColor { get; set; }
+        public string HoverBackgroundColor { get; set; }
+        public string PointHoverBackgroundColor { get; set; }
         public string BorderColor { get; set; }
+
+        public string Type { get; set; }
 
         public Ng2ChartLine(string label)
         {
             this.Label = label;
-            this.Data = new List<int?>();
+            this.Data = new List<decimal?>();
         }
         public Ng2ChartLine(int id, string label, bool hidden = false, string backgroundColor = null, string borderColor = null) : this(label)
         {

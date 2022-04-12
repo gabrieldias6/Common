@@ -18,6 +18,12 @@ namespace GD6.Common
             return xmlTransaction?.TransactionSearchResult.Transactions.Transaction;
         }
 
+        public static PagSeguroTransactionDto GetTransactionSearchOne(string content)
+        {
+            var xmlTransaction = GetXmlObject<PagSeguroXmlTransactionSearchResultOne>(content);
+            return xmlTransaction?.TransactionSearchResult.Transactions.Transaction;
+        }
+
         private static T GetXmlObject<T>(string content)
         {
             // Cria um XML com a Resposta

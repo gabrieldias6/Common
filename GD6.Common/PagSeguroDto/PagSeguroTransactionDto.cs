@@ -4,6 +4,25 @@ using System.Text;
 
 namespace GD6.Common
 {
+
+    public class PagSeguroXmlTransactionSearchResultOne
+    {
+        public TransactionSearchResultOne TransactionSearchResult { get; set; }
+    }
+
+    public class TransactionSearchResultOne
+    {
+        public TransactionSearchResultTransactionsOne Transactions { get; set; }
+    }
+
+    public class TransactionSearchResultTransactionsOne
+    {
+        public PagSeguroTransactionDto Transaction { get; set; }
+    }
+
+
+
+
     public class PagSeguroXmlTransactionSearchResult
     {
         public TransactionSearchResult TransactionSearchResult { get; set; }

@@ -59,8 +59,9 @@ namespace GD6.Common
                 .Where(x => x.Id == id)
                 .ProjectTo<TEntityDto>(Mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
-
-            entityDto = await GetByIdDoAfter(entityDto);
+            
+            if (entityDto != null)
+                entityDto = await GetByIdDoAfter(entityDto);
 
             return entityDto;
 
@@ -206,6 +207,7 @@ namespace GD6.Common
         protected virtual async Task<TEntity> Create(TEntity entity)
         {
             await Repository.Create(entity);
+            ClearCache();
             return entity;
         }
 
@@ -227,6 +229,7 @@ namespace GD6.Common
         public virtual async Task CreateMany(IEnumerable<TEntity> entities)
         {
             await Repository.CreateMany(entities);
+            ClearCache();
         }
         protected virtual async Task UpdateDoBefore(TEntity entity, TEntityDto entityDto) { }
         protected virtual async Task UpdateDoBeforeMap(TEntity entity, TEntityDto entityDto) { }
@@ -257,6 +260,7 @@ namespace GD6.Common
         public virtual async Task<TEntity> Update(int id, TEntity input)
         {
             await Repository.Update(id, input);
+            ClearCache();
             return input;
         }
 
@@ -278,6 +282,7 @@ namespace GD6.Common
         public virtual async Task UpdateMany(IEnumerable<TEntity> entities)
         {
             await Repository.UpdateMany(entities);
+            ClearCache();
         }
 
         protected virtual async Task DeleteDoBefore(TEntity entity) { }
@@ -288,6 +293,7 @@ namespace GD6.Common
             await DeleteDoBefore(entity);
 
             await Repository.Delete(entity);
+            ClearCache();
         }
 
         protected virtual async Task DeleteManyDoBefore(IEnumerable<TEntity> entity) { }
@@ -298,6 +304,9 @@ namespace GD6.Common
             await DeleteManyDoBefore(entities);
 
             await Repository.DeleteMany(entities);
+            ClearCache();
         }
+
+        protected virtual void ClearCache() { }
     }
 }

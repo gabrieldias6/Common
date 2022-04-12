@@ -9,7 +9,7 @@ namespace GD6.Common
         {
             var row = linha.Cell(enums.GetHashCode());
             if (row != null && row.Value != null)
-                return row.Value.ToString();
+                return row.Value.ToString().Trim();
 
             return null;
         }

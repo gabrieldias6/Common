@@ -27,7 +27,7 @@ namespace GD6.Common
     public class ChatProApiClienteDto : ChatProApiDto
     {
         public ChatProApiUserDto User { get; set; }
-        public IEnumerable<ChatProApiInstanciaDto> Instances { get; set; }
+        public List<ChatProApiInstanciaDto> Instances { get; set; }
     }
 
     public class ChatProApiUserDto

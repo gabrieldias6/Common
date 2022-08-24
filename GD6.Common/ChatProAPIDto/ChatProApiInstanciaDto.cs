@@ -92,7 +92,7 @@ namespace GD6.Common
     {
         public string Error { get; set; }
         public string Qr { get; set; }
-        public string Status { get; set; }
+        public bool Status { get; set; }
         public string Ttl { get; set; }
     }
 
@@ -127,6 +127,10 @@ namespace GD6.Common
 
         [JsonProperty("resposeMessage")]
         public ChatProApiMessageResposeMessageDto ResposeMessage { get; set; }
+
+        // Em caso de Erro
+        [JsonProperty("erro")]
+        public bool Erro { get; set; }
     }
 
     public class ChatProApiMessageResposeMessageDto
@@ -136,6 +140,15 @@ namespace GD6.Common
 
         [JsonProperty("timestamp")]
         public string Timestamp { get; set; }
+    }
+
+    public class ChatProApiMessageResposeMessageDtoErro
+    {
+        [JsonProperty("erro")]
+        public bool Erro { get; set; }
+
+        [JsonProperty("message")]
+        public string Message { get; set; }
     }
 
     // Mensagem Uri

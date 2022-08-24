@@ -54,7 +54,9 @@ namespace GD6.Common
         Cancelada = 7,
         Debitado = 8,
         RetencaoTemporaria = 9,
-        Erro = 10
+        Erro = 10,
+
+        NaoPago = 11,
     }
 
 

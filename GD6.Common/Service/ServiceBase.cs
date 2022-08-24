@@ -66,6 +66,19 @@ namespace GD6.Common
             return entityDto;
 
         }
+
+        public async Task<TDto> GetById<TDto>(int id)
+             where TDto : class, IEntityBaseDto
+        {
+            var entityDto = await GetAll()
+                .Where(x => x.Id == id)
+                .ProjectTo<TDto>(Mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            return entityDto;
+
+        }
+
         protected virtual async Task<TEntityDto> GetByIdDoAfter(TEntityDto entityDto) => entityDto;
 
         protected virtual IQueryable<TEntity> GetEntityByIdInclue(IQueryable<TEntity> query) => query;
@@ -128,7 +141,7 @@ namespace GD6.Common
             var result = new EntityDtoListResult<TEntityList>
             {
                 Data = entities,
-                RecordsFiltered = entities.Count,
+                RecordsFiltered = totalCount,
                 RecordsTotal = totalCount,
                 Draw = request.Draw
             };
@@ -242,8 +255,8 @@ namespace GD6.Common
             var entity = await GetAll().FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity == null)
-                throw new ErroException("O id informado não existe!");
-
+                throw new ErroException("Registro não localizado. Verifique se foi deletado por outro usuário!", $"Id: {id}");
+             
             await UpdateDoBefore(entity, input);
 
             Mapper.Map(input, entity);

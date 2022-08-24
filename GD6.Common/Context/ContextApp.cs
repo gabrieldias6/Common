@@ -15,8 +15,20 @@ namespace GD6.Common
         public const string ClaimPlanoId = "PlanoId";
         public const string ClaimUsuarioPermissoes = "UsuarioPermissoes";
 
-        public int? UserId { get; set; }
-        public int? ClientId { get; set; }
+        public int? UserId { get; private set; }
+        public int? ClientId { get; private set; }
         public bool IsAutenticated { get; set; }
+
+        public void SetCliente(int clientId)
+        {
+            ClientId = clientId;
+        }
+
+        public void SetUserId(int? userId)
+        {
+            UserId = userId;
+            if (UserId.HasValue)
+                IsAutenticated = true;
+        }
     }
 }

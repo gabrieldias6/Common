@@ -23,15 +23,14 @@ namespace GD6.Common.Context
 
             if (userId != null && !string.IsNullOrEmpty(userId.Value))
             {
-                context.IsAutenticated = true;
-                context.UserId = Convert.ToInt32(userId.Value);
+                context.SetUserId(Convert.ToInt32(userId.Value));
             }
 
             var clientId = httpContext.User.FindFirst(ContextApp.ClaimCliente);
 
             if (clientId != null && !string.IsNullOrEmpty(clientId.Value))
             {
-                context.ClientId = Convert.ToInt32(clientId.Value);
+                context.SetCliente(Convert.ToInt32(clientId.Value));
             }
 
             await _next(httpContext);

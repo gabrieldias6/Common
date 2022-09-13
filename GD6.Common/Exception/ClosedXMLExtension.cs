@@ -62,5 +62,17 @@ namespace GD6.Common
 
             return null;
         }
+        public static bool GetBoolean(this IXLRangeRow linha, Enum enums)
+        {
+            var value = linha.GetString(enums);
+
+            if (!string.IsNullOrEmpty(value))
+            {
+                if (Boolean.TryParse(value, out bool valueConvert))
+                    return valueConvert;
+            }
+
+            return false;
+        }
     }
 }

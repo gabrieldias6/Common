@@ -60,6 +60,13 @@ namespace GD6.Common
         public int Value { get; set; }
     }
 
+    public class ChatProApiResponseNew
+    {
+        public HttpStatusCode StatusCode { get; set; }
+        public string Error { get; set; }
+        public string Message { get; set; }
+    }
+
     public class ChatProApiResponse
     {
         public string Content { get; set; }

@@ -161,6 +161,13 @@ namespace GD6.Common
     // Mensagem Uri
     public class ChatProApiMessageFileRequest
     {
+        public ChatProApiMessageFileRequest(string number, string caption, string url)
+        {
+            Number = number;
+            Caption = caption;
+            Url = url;
+        }
+
         public string Caption { get; set; }
         public string Number { get; set; }
         public string Url { get; set; }

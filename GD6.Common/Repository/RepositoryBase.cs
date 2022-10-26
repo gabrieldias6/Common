@@ -18,15 +18,15 @@ namespace GD6.Common
         public virtual async Task<TEntity> GetById(int id)
         {
             return await UnitOfWork.Current.Set<TEntity>()
-                      .AsNoTracking()
+                      //.AsNoTracking()
                       .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public IQueryable<TEntity> GetAll()
         {
             return UnitOfWork.Current
-              .Set<TEntity>()
-              .AsNoTracking();
+              .Set<TEntity>();
+              //.AsNoTracking();
         }
 
         public virtual async Task Create(TEntity entity)
@@ -43,14 +43,14 @@ namespace GD6.Common
 
         public virtual async Task Update(int id, TEntity entity)
         {
-            entity.Id = id;
-            UnitOfWork.Current.Set<TEntity>().Update(entity);
+            //entity.Id = id;
+            //UnitOfWork.Current.Set<TEntity>().Update(entity);
             await UnitOfWork.Current.SaveChangesAsync();  
         }
 
         public virtual async Task UpdateMany(IEnumerable<TEntity> entities)
         {
-            UnitOfWork.Current.Set<TEntity>().UpdateRange(entities);
+            //UnitOfWork.Current.Set<TEntity>().UpdateRange(entities);
             await UnitOfWork.Current.SaveChangesAsync();
         }
 
